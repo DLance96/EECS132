@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>EECS 132: Homework Project 3</title>
+</head>
+
+<body>
+<h2>Programming Project 3</h2>
+<h3>Due Friday, November 7 at 11:59pm</h3>
+
+<p>The purpose of this project is to get you to use arrays and loops in building a "real" program.</p>
+
+<p>To submit your project, click on the <em>Project 3</em> link, and you should find a <em>Submit</em> link.  Attach your
+Java file, your JUnit file, and your testing report.
+Remember to attach the file that end in <tt>.java</tt>, not <tt>.class</tt> or <tt>.java~</tt>.</p>
+
+<h3>General Guidelines (20% of your grade will be based on using good style)</h3>
+
+<p>Guidelines continued from past projects:
+</p><ul>
+<li>You should place a JavaDoc comment at the top of the file that contains your name (with an appropriate tag)
+and a short description of the purpose of the class.</li>
+<li>You should place a <em>short</em> JavaDoc comment before (directly above) each method describing the method.  The comment should
+be one sentence and describe <em>what</em> the method does, not <em>how</em> it does it.  Be certain to use the
+appropriate JavaDoc tags for parameters, return values, and exceptions (if appropriate). </li>
+<li>You should place a short JavaDoc comment directly above any field indicating the purpose of the variable.</li>
+<li>You should place a comment next to any local variable (loop indeces do not need comments) indicating the purpose
+of the variable. </li>
+<li>You should place a short comment above each loop explaining how the loop works.
+Ideally, you should list the goal of the
+loop, any required precondition for the loop, and if you can, a good invariant for the loop.</li>
+<li>The class should be organized so the fields are at the top, then the constructors, then the non-static methods,
+and finally the static methods.  The <tt>main</tt> method should be last.</li>
+<li>There should be an empty line between the end of one method and the start of the JavaDoc comment for the next method.</li>
+<li>All variables and methods should be named according to the standard Java protocol.</li>
+<li>All code should be indented appropriately.</li>
+</ul><p></p>
+
+<p>New guidelines for this project.  You must keep your code as simple as possible.  That means:
+</p><ul>
+<li>You need to avoid unnecessary fields in your class.  Limit fields to data that <em>must</em> be stored between moves of the game
+and can not be accessed through other means.</li>
+<li>Your loops should be simple.  Avoid nested loops unless they are required.  <em>Hint</em>:
+ If you are running through a two dimensional
+area, a nested loop is needed, but if your algorithm is running in a 
+straight line through the board (even if that line is not horizontal)
+only a single, unnested loop is required.</li>
+</ul>
+<p></p>
+
+<h3>Programming (60% of the project grade)</h3>
+
+<h4>Part 1: Manipulating 2-D Arrays</h4>
+
+<p>For each of the methods below, you may assume that the two dimensional array is <em>rectangular</em>. This means that all the rows (each array in the array of arrays) have the same number of columns (elements).
+
+</p><ol>
+<li><p><tt>boolean slideLeft(int[][] array, int row)</tt>: For each non-zero element of <tt>row</tt>, starting from the leftmost non-zero element of <tt>row</tt>
+ (the element at least index), you "slide" the element as far left as 
+you can until it "hits" another 
+non-zero element or the start of the array.
+However, if the element "hits" another element with the same value, the 
+two elements are "merged" by adding the sliding element's value to the 
+element that it "hits".</p>
+<p>For example, if the input array stores <tt>{0, 1, 0, 2}</tt>, the result of <tt>slideLeft</tt> should be <tt>{1, 2, 0, 0}</tt> as first the 1 slides left until it gets to the first index, and the 2 is then slid left until it hits the 1.<br>
+If the input array stores <tt>{0, 1, 0, 1}</tt>, the result of <tt>slideLeft</tt> should be <tt>{2, 0, 0, 0}</tt>
+ as the left 1 slides left until it gets to the first index, and the 
+second 1 slides left until it hits the 1 causing it to merge with the 1.</p>
+Since you slide the leftmost non-zero element first, if the input array stores <tt>{0, 1, 1, 1, 1}</tt>, the result of calling <tt>slideLeft</tt> should be <tt>{2, 2, 0, 0, 0}</tt><br>
+and if the input array stores <tt>{0, 1, 1, 2, 0}</tt>, the result of calling <tt>slideLeft</tt> should be <tt>{4, 0, 0, 0, 0}</tt>.<p></p>
+<p>The method should return <tt>true</tt> if at least one element was slid, and <tt>false</tt> if the array did not change. (See if you can do that without making an extra copy of the array.)</p></li>
+
+<li><p><tt>boolean slideRight(int[][] array, int row)</tt>: Behaves exactly the same as <tt>slideLeft</tt> except that it starts at the rightmost non-zero element of <tt>row</tt> (the element at greatest index), and slides the element to the right.</p></li>
+
+<li><p><tt>boolean slideUp(int[][] array, int col)</tt>: Behaves exactly the same as <tt>slideLeft</tt> except that it starts at the topmost non-zero element in <tt>col</tt> (that is, the element at <tt>array[x][col]</tt> with the smallest value <tt>x</tt>),
+and slides the element up.</p></li>
+
+<li><p><tt>boolean slideDown(int[][] array, int col)</tt>: Behaves exactly the same as <tt>slideLeft</tt> except that it starts at the bottommost non-zero element in <tt>col</tt> (that is, the element at <tt>array[x][col]</tt> with the largest value <tt>x</tt>),
+and slides the element down.</p></li>
+
+<li><p><tt>boolean slideUpLeft(int[][] array, int row, int col):</tt> Behaves the same as <tt>slideLeft</tt>
+ except that the elements are slid along a diagonal.  If we imagine the 
+two dimensional array as a rectangle, each non-zero element in the same 
+top-left to bottom-right diagonal as the
+element at <tt>array[row][col]</tt> is slid up and to the left, starting with the element closest to the (0,0) index.</p></li>
+
+<li><p><tt>boolean slideDownRight(int[][] array, int row, int col):</tt> Behaves the same as <tt>slideLeft</tt>
+ except that the elements are slid along a diagonal.  If we imagine the 
+two dimensional array as a rectangle, each non-zero element in the same 
+top-left to bottom-right diagonal as the 
+element at <tt>array[row][col]</tt> is slid down and to the right, starting with the element furthest from the (0,0) index.</p></li>
+
+<li><p><tt>boolean slideUpRight(int[][] array, int row, int col):</tt> Behaves the same as <tt>slideLeft</tt>
+ except that the elements are slid along a diagonal.  If we imagine the 
+two dimensional array as a rectangle, each non-zero element in the same 
+top-right to bottom-left diagonal as the 
+element at <tt>array[row][col]</tt> is slid up and to the right, starting with the element closest to the top right corner.</p></li>
+
+<li><p><tt>boolean slideDownLeft(int[][] array, int row, int col):</tt> Behaves the same as <tt>slideLeft</tt>
+ except that the elements are slid along a diagonal.  If we imagine the 
+two dimensional array as a rectangle, each non-zero element in the same 
+top-right to bottom-left diagonal as the 
+element at <tt>array[row][col]</tt> is slid down and to the left, starting with the element closest to the bottom left corner.</p></li>
+<p></p>
+</ol>
+
+<h4>Part 2: Creating a "Slide Game" GUI: Our Version of the Game 2048</h4>
+
+The <tt>SlideGame</tt> class should have the following constructor:
+<ul>
+<li> <tt>public SlideGame(int rows, int column)</tt> <br>
+    Creates a <tt>rows</tt>x<tt>columns</tt> grid, displays and starts the game.</li>
+</ul>
+You may assume that reasonable numbers are entered.<p></p>
+
+<p>You are to create a game board by making a two dimensional grid of <tt>JButton</tt>s on a <tt>JPanel</tt>.
+You do this by setting the <em>layout manager</em> of the <tt>JPanel</tt> to be a
+<tt>GridLayout</tt> of the appropriate size.  Here is code that creates a layout for a 4x4 grid:
+</p><pre>JPanel board = new JPanel(new GridLayout(4, 4));
+</pre>
+Then, the <tt>JPanel</tt> can be added as the center component of a <tt>JFrame</tt>,
+<pre>  <em>your JFrame</em>.getContentPane().add(board, "Center")
+</pre> 
+and you can
+display the <tt>JFrame.</tt><p></p>
+<p>
+With a 4x4 grid, you can add up to 16 components to the <tt>JPanel</tt>.
+Each component added to the <tt>JPanel</tt> will go into the grid in the following order:
+</p><pre> 1  2  3  4
+ 5  6  7  8
+ 9 10 11 12
+13 14 15 16</pre>
+Where the number <em>i</em> indicates the location of the <em>i</em>th added component.
+<p></p>
+
+<p>You should create both a 2-dimensional array of <tt>int</tt>, each <tt>int</tt> initialized to 0,
+and a 2-dimensional array of <tt>JButton</tt>s.  The <tt>JButtons</tt>s should be added to the <tt>JPanel</tt>
+in the appropriate order so that the location of a button in the array corresponds to its location
+in the panel.  Try setting a default size for the <tt>JFrame</tt> so that it launches with
+a reasonable board.</p>
+
+<p><strong>Important:</strong> You should not call <tt>setVisible</tt> for your <tt>JFrame</tt> until after you have added all the buttons (and created any other visuals for your game).
+Swing is <em>multi-threaded</em>.  We will learn about threads at the end of the course, but in short, a different thread is running your class
+constructor than is displaying the JFrame.  If you run <tt>setVisible</tt> before you complete setting <tt>JFrame</tt>'s look, some of the buttons or visuals may not be visible
+when the window first appears.</p>
+
+<h4>Part 3: Initialize the Game</h4>
+
+<p>Create methods to do the following:
+</p><ol><li>Method 1: operates on the two 2-dimensional arrays.  For each element in the <tt>int</tt> array that is not zero,
+it makes that number the label for the corresponding <tt>JButton</tt> in the button array.  Otherwise, the label for the
+corresponding <tt>JButton</tt> should be blank.</li>
+<li>Method 2: counts the number of blank <tt>JButtons</tt> (or equivalently, the number of zero elements in the <tt>int</tt> array),
+uses <tt>Math.random</tt> to choose a random blank <tt>JButton</tt>, and sets both the <tt>int</tt> array element and that <tt>JButton</tt>
+label to have value <tt>1</tt>.</li></ol>
+<p></p>
+
+<p>Now, use these methods so that your game displays a blank grid with a single 1 in a random square on the grid.</p>
+
+
+<h4>Part 4: Implement the buttons</h4>
+<p>You should create an <tt>ActionListener</tt> for the buttons.  An
+<tt>ActionListener</tt> has a method <tt>actionPerformed</tt> that is called every time
+the button is pressed.  The <tt>actionPerformed</tt> method has a single parameter,
+<tt>ActionEvent e</tt>, and you can get the button that was pressed by using the code
+</p><pre>JButton b = (JButton)e.getSource();</pre>
+<tt>b</tt> is the button that was pressed, and you can locate this button in your
+array of buttons to determine <tt>b</tt>'s row and column.  Alternatively, you can create separate
+<tt>ActionListener</tt>s for each of your buttons.<p></p>
+
+<p>If a button on the left column is clicked, but not one of the corner buttons, you should call <tt>slideLeft</tt> on each row of your <tt>int</tt> array.
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button on the right column is clicked, but not one of the corner buttons, you should call <tt>slideRight</tt> on each row of your <tt>int</tt> array.
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button on the top row is clicked, but not one of the corner buttons, you should call <tt>slideUp</tt> on each column of your <tt>int</tt> array.
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button on the bottom row is clicked, but not one of the corner buttons, you should call <tt>slideDown</tt> on each column of your <tt>int</tt> array.
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button in the top left corner is clicked, you should call <tt>slideUpLeft</tt> on each diagonal of your <tt>int</tt> array. 
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button in the top right corner is clicked, you should call <tt>slideUpRight</tt> on each diagonal of your <tt>int</tt> array. 
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button in the bottom left corner is clicked, you should call <tt>slideDownLeft</tt> on each diagonal of your <tt>int</tt> array. 
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>If a button in the bottom right corner is clicked, you should call <tt>slideDownRight</tt> on each diagonal of your <tt>int</tt> array. 
+If any elements are slid, you should call the methods to update the button labels and to add a new random 1 to the game.</p>
+
+<p>Clicking any other button of the grid should have no affect.</p>
+
+<h4>Part 5: Add a <tt>main</tt> method</h4>
+<p>The <tt>SlideGame</tt> class should have a <tt>main</tt> method that launches the 
+game.  With a <tt>main</tt> method, you should be able to play your game by typing:
+</p><pre>java SlideGame</pre>
+in the Interactions pane (or outside of DrJava).  You should also allow the user to enter two arguments for the board size.
+For example: <br>
+<tt>java SlideGame</tt> should start a game with a 4x4 grid, and<br>
+<tt>java SlideGame 4 6</tt> should start a game with 4 rows and 6 columns.
+If the user enters something other than realistic numbers, your code should
+do something appropriate, but not crash.<p></p>
+
+<h3>Testing Report and JUnit (20% of the Project Grade)</h3>
+
+<p>You will be including JUnit tests of the eight array methods in your 
+project.  Your testing report should describe the following:
+</p><ol><li>What "first, middle, last" and "0, 1, many" means for the 
+JUnit tested methods.  Do not give the actual tests, or their results.  
+The JUnit class
+does that.  Rather, you need to describe why the JUnit tests you did are
+ sufficient to cover all the needed cases.</li>
+<li>Next describe the tests you did to verify that your game is working.
+  Because the game is visual, you will not be able to provide coding 
+results.
+You should describe the different scenerios that need to be covered in 
+testing the game, describe the tests you did in enough detail that the 
+graders can perform the
+same test on your game, and you should give the results of your tests.  <em>Warning</em>: your testing report must match your game.  
+</li></ol><p></p>
+
+<h3>Extra Credit: (10%)</h3>
+
+<p>If you decide to do an extra credit, <em>you must state in the Blackboard comments what you did</em>.  Don't make us hunt
+through your code.</p>
+
+<p>For extra credit, you can make any improvements to the aesthetics or game play as you like.  <em>Exception, you may not change the behavior of the slide methods nor
+change the behavior of clicking the different buttons around the grid.</em>.</p>
+
+<p><strong>Important:</strong> Mac machines do not, by default, permit 
+you to change the color of a button.  Probably because Apple
+thinks it knows better than you what a user interface should look like. 
+ To be able to set a button's background color, you need to
+add this code to your program (either in the constructor or the main 
+method):
+</p><pre>    try {
+      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    }
+    catch (Exception e) {
+    }
+</pre>
+<p></p>
+
+
+
+
+
+</body></html>

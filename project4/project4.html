@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>EECS 132: Homework Project 4</title>
+</head>
+
+<body>
+<h2>Programming Project 4</h2>
+<h3>Due Friday, November 21 at 11:59pm</h3>
+
+<p>The purpose of this project is to create an object hierarchy and see both how an object hierarchy
+can be used to greatly simplify code, and possibly to see the limitations as to what we can do with Java's classes.</p>
+
+<p>To submit your project, click on the <em>Project 4</em> link, and you should find a <em>Submit</em> link.  Attach your
+Java files and your testing report.
+Remember to attach the file that end in <tt>.java</tt>, not <tt>.class</tt> or <tt>.java~</tt>.</p>
+
+<h3>General Guidelines (20% of your grade will be based on using good style)</h3>
+
+<p>Guidelines continued from past projects:
+</p><ul>
+<li>You should place a JavaDoc comment at the top of the file that contains your name (with an appropriate tag)
+and a short description of the purpose of the class.</li>
+<li>You should place a <em>short</em> JavaDoc comment before (directly above) each method describing the method.  The comment should
+be one sentence and describe <em>what</em> the method does, not <em>how</em> it does it.  Be certain to use the
+appropriate JavaDoc tags for parameters, return values, and exceptions (if appropriate). </li>
+<li>You should place a short JavaDoc comment directly above any field indicating the purpose of the variable.</li>
+<li>You should place a comment next to any local variable (loop indeces do not need comments) indicating the purpose
+of the variable. </li>
+<li>You should place a short comment above each loop explaining how the loop works.
+Ideally, you should list the goal of the
+loop, any required precondition for the loop, and if you can, a good invariant for the loop.</li>
+<li>The class should be organized so the fields are at the top, then the constructors, then the non-static methods,
+and finally the static methods.  The <tt>main</tt> method should be last.</li>
+<li>There should be an empty line between the end of one method and the start of the JavaDoc comment for the next method.</li>
+<li>All variables and methods should be named according to the standard Java protocol.</li>
+<li>All code should be indented appropriately.</li>
+<li>You need to avoid unnecessary fields in your class. </li>
+<li>Your loops should be simple.  Avoid nested loops unless they are required.</li>
+</ul>
+and some new guidelines for this homework:
+<ul>
+<li>You may (and probably need to) add additional classes, interfaces, methods and fields to what is listed below.</li>
+<li>You should not have an object store the same value in multiple fields. (For example, if the parent class has a field that
+stores a value, the class that extends it should not have a field that stores the identical value.)</li>
+<li>Your class hierarchy should be simple and intuitive.  Don't force a class to be a subclass of another if it does not make sense.</li>
+<li>A good hierarchy will reduce the amount of code you need to write.</li>
+</ul><p></p>
+
+<h3>Programming (60% of the project grade)</h3>
+
+<h4>An overview of enum</h4>
+
+<p>The project will be using enum types.  An enum is a non-primitive 
+type.  What distinguishes an enum from other non-primitive types is that
+ all the instances of
+the type are specified when the class is defined.  For example:
+</p><pre>public enum Days { Mon, Tue, Wed, Thu, Fri, Sat, Sun; }
+</pre>
+creates a non-primitive type <tt>Days</tt> and 7 instances of the type.  The <tt>Mon</tt>, etc., are each <tt>public static final</tt>
+ variables that store one of the 7 instances of the type.
+Just like with other non-primitive types, you can create methods, 
+constructors, etc., by placing them inside the curly braces and after 
+the listed variables. 
+Because no new instances can be created, the constructor for the enum 
+type cannot be public.  If you create a constructor that takes input, 
+you pass the input to the constructor by putting parentheses after
+each of the enum instance variables.  For example: <tt>Mon(1), Tue(2), ...</tt>.<p></p>
+
+<h4>An overview of variable length parameters</h4>
+
+<p>A variable length parameter is a Java shortcut that can be used by a 
+method that takes an array as input.  With the shortcut, you do not need
+ to create the array explicitly.
+For example:
+</p><pre>public int maximum(int[] a) { 
+  int max = 0;
+  for (int i = 1; i &lt; a.length; i++)
+    if (a[i] &gt; a[max])
+      max = i;
+  return max;
+}
+</pre>
+is the normal way we pass an array to a method.  To call <tt>maximum</tt>, we must create an array first:  <tt>maximum(new int[]{1, 2, 3})</tt>.<p></p>
+<p>If we change <tt>maximum</tt> to take a <em>variable length parameter</em>, it looks like this:
+</p><pre>public int maximum(int... a) { 
+  int max = 0;
+  for (int i = 1; i &lt; a.length; i++)
+    if (a[i] &gt; a[max])
+      max = i;
+  return max;
+}
+</pre>
+Notice that the body of <tt>maximum</tt> did not change.  The input <tt>a</tt> is still an array of <tt>int</tt>.  However, we now have two ways to call <tt>a</tt>.  We can still use the traditional way of 
+passing in an array: <tt>maximum(new int[]{1, 2, 3})</tt> or we can just pass in the elements and Java will automatically place them in an array of the correct size: <tt>maximum(1, 2, 3)</tt>.
+Note that there can be only one <em>variable length parameter</em> per method, and the <em>variable length parameter</em> must be the last parameter of the method.  (Can you see why?)<p></p>
+
+<h4>Your programming task</h4>
+
+<p>Some programming languages, like Scratch, are designed for beginning 
+programmers, and especially children, to learn the basics of coding.  In
+ these languages,
+coding structures are often displayed graphically as colored blocks and 
+shaped in a way to indicate what types of structures can be contained in
+ other structures.
+The purpose of this code is to design the underlying model used for a 
+simple Scratch-like programming language.  You will design classes that 
+represent different programming
+language strucrures, and then a user can program by combining the 
+different structures together.</p>
+
+<p>Your project should contain the following types.  Each type can be a 
+class or an interface.  You may need to create additional types to 
+accomplish all the tasks.  The goal is to write a good hierachy that 
+limits the amount of code you need to write:
+</p><ol>
+<li><p><tt>State</tt>:  The state represents the variables and their contents that are accessible to a particular part of the program. 
+Because our language is geared to true novices, the only type we will allow is <tt>int</tt>.  Since everything is an <tt>int</tt>, we will
+not have errors if a variable is used before it is assigned a value.</p>
+<p>The <tt>State</tt> should contain a <tt>Hashtable</tt> from the Java API.  You should set the key of the hashtable to be <tt>String</tt> (this will represent the names of the
+variables) and the values of the hashtable to be type <tt>int</tt> (this will represent the values stored in the variables.  The <tt>State</tt> class should have the following
+methods:
+</p><ul><li><tt>update</tt> takes a <em>variable name</em> and a <em>variable value</em>.  The name and value pair should be added to the hash table.</li>
+<li><tt>lookup</tt> takes a <em>variable name</em> and returns the <tt>int</tt> value of the variable, as stored in the hashtable.  If there is no such variable in the hashtable,
+the value returned should be 0. (No error should be given because we want to avoid all errors in our language.)</li>
+</ul><p></p>
+</li>
+
+<li><p><tt>Variable</tt>: The <tt>Variable</tt> type represents a variable in our program.  A <tt>Variable</tt> type instance should be created with one argument: a string name, and the type should
+have the following methods:
+</p><ul><li><tt>value</tt>: takes a <em>state</em> as input and returns the <tt>int</tt> value associated with this variable name that is stored in the input state.</li>
+    <li><tt>toString</tt>: should return the name of the variable.</li>
+</ul><p></p></li>
+
+
+<li><p><tt>Number</tt>: The <tt>Number</tt> type represents a whole number.  A <tt>Number</tt> type instance should be created with one argument: an <tt>int</tt> value, and the type should have the
+following methods:
+</p><ul><li><tt>value</tt>: takes a <em>state</em> as input and returns the <tt>int</tt> value of the number.</li>
+    <li><tt>toString</tt>: returns a string representation of the numeric value of the number.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>ArithmeticOperation</tt>: The <tt>ArithmeticOperation</tt> represents an arithmetic operation between two values.  The <tt>ArithmeticOperation</tt>
+ type should
+contain the following enum type to represent the possible operations for
+ the language (you are free to add additional operators if you wish):
+</p><pre>public enum Operator { Add, Sub, Mult, Div, Rem; }
+</pre>
+The operators represent the +, -, *, /, and % operations.<p></p>
+<p>
+An <tt>ArithmeticOperation</tt> type instance should be created with three arguments: 
+an <em>operation</em> that is from the above <tt>Operator</tt> enum type, and two <em>expressions</em>
+that represent the left operand expression and the right operand 
+expression.  The type should allow any language structure that has an <tt>int</tt> value to be a possible
+expression.   The <tt>ArithmeticOperation</tt> type should have the following methods:
+</p><ul><li><tt>value</tt>: takes a <em>state</em> as input and returns the <tt>int</tt> value that is the result of applying the <em>operation</em> to the values of each of the operand
+<em>expressions</em>.  The <em>state</em> should be used to get the values of the <em>expressions</em>.</li>
+    <li><tt>toString</tt>: should return a string that first contains a 
+string representation of the left operand followed by a space, a string 
+representation of the operator, 
+a space, and the string representation of the right operand.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>Comparison</tt>: The <tt>Comparison</tt> type represents a comparison between two <em>expressions</em>.  The <tt>Comparison</tt> type should contain the following
+enum type to represent the possible comparisons for the langauge (you are free to add additional operators if you wish):
+</p><pre>public enum Operator { LT, LTE, GT, GTE, EQ, NEQ; }
+</pre>
+The operators represent the &lt; &lt;=, &gt;, &gt;=, ==, and != operations.<p></p>
+<p>The <tt>Comparison</tt> type instance should be created with three arguments: an <em>operation</em> that is from the above <tt>Operator</tt> enum type, and two
+<em>expressions</em> that represent the left operand expression and the 
+right operand expression.  The type should allow any language structure 
+that has an <tt>int</tt> value to be
+a possible expression.  The <tt>Comparison</tt> type should have the following methods:
+</p><ul><li><tt>value</tt>: takes a <em>state</em> as input and returns the <tt>boolean</tt> value that is the result of applying the <em>operation</em> to the values of each of the
+operand <em>expressions</em>.  The <em>state</em> should be used to get the values of the <em>expressions</em>.</li>
+    <li><tt>toString</tt>: should return a string that first contains a 
+string representation of the left operand followed by a space, a string 
+representation of the operator, 
+a space, and the string representation of the right operand.</li>
+   </ul>
+<p></p></li>
+
+<li><p><tt>BooleanOperation</tt>: The <tt>BooleanOperation</tt> type represents a boolean operation between two boolean conditions.
+The <tt>BooleanOperation</tt> type should
+contain the following enum type to represent the possible operations for
+ the language (you are free to add additional operators if you wish):
+</p><pre>public enum Operator { And, Or; }
+</pre>
+The operators represent the &amp;&amp; and || operations.<p></p>
+<p>
+An <tt>BooleanOperation</tt> type instance should be created with three arguments: 
+an <em>operation</em> that is from the above <tt>Operator</tt> enum type, and two <em>boolean conditions</em>
+that represent the left operand and the right operand.  The type should allow any language structure that has a <tt>boolean</tt> value to be a possible
+condition.   The <tt>BooleanOperation</tt> type should have the following methods:
+</p><ul><li><tt>value</tt>: takes a <em>state</em> as input and returns the <tt>boolean</tt> value that is the result of applying the <em>operation</em> to the values of each of the operand
+<em>conditions</em>.  The <em>state</em> should be used to get the values of the <em>conditions</em>.</li>
+    <li><tt>toString</tt>: should return a string that first contains a 
+string representation of the left operand followed by a space, a string 
+representation of the operator, 
+a space, and the string representation of the right operand.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>Assignment</tt>: The <tt>Assignment</tt> type represents an assignment statement in the language.
+An <tt>Assignment</tt> type instance should be created with two arguments, a <em>variable</em> and an <em>expression</em>.  Any language structure that has an <tt>int</tt> value
+should be allowed as the <em>expression</em>.   The <tt>Assignment</tt> type should have the following methods:
+</p><ul><li><tt>execute</tt>: takes a <em>state</em> and returns nothing.  The method <em>updates</em> the <em>state</em> to set the value of the <em>variable</em> to be the <em>value</em>
+of the <em>expression</em>. The <em>state</em> should be used to get the value of the <em>expression</em>.</li>
+    <li><tt>toString</tt>: should return a string that contains the <em>variable</em>'s string value, followed by a space, followed by ":=" character, followed by a space,
+           followed by a string representation of the <em>expression</em> followed by a semicolon, followed by the newline character.</li>
+    <li><tt>toStringTabbed</tt>: takes an <tt>int</tt> as input and returns a string.  The returned string should be indentical to what is returned by <tt>toString</tt> except that
+            the string is prefixed by a number of tab characters equal to the value of the input <tt>int</tt>.  You may assume the input value is not negative.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>Return</tt>: The <tt>Return</tt> type represents a return statement in the language.
+A <tt>Return</tt> type instance should be created with one argument, an <em>expression</em>.  Any language structure that has an <tt>int</tt> value should be allowed as the <em>expression</em>. 
+  The <tt>Return</tt> type should have the following methods:
+</p><ul><li><tt>execute</tt>: takes a <em>state</em> and returns nothing.  The method <em>updates</em> the <em>state</em> to set the value of a special variable called <em>"return"</em>
+to have the value of the <em>expression</em>.  The <em>state</em> should be used to get the value of the <em>expression</em>.</li>
+    <li><tt>toString</tt>: should return a string that contains the text "return", followed by a space,
+           followed by a string representation of the <em>expression</em> followed by a semicolon, followed by the newline character.</li>
+    <li><tt>toStringTabbed</tt>: takes an <tt>int</tt> as input and returns a string.  The returned string should be indentical to what is returned by <tt>toString</tt> except that
+            the string is prefixed by a number of tab characters equal to the value of the input <tt>int</tt>.  You may assume the input value is not negative.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>ConditionalStatement</tt>: The <tt>ConditionalStatement</tt> type represents a conditional statement (if) in the language.
+A <tt>ConditionalStatement</tt> type instance should be created with three arguments, a <em>boolean condition</em> and two <em>statements</em> representing the then statement and
+the else statement.  Any language structure that has an <tt>boolean</tt> value should be allowed as the <em>condition</em>, and any language structure that represents a statement
+should be allowed as either statement. 
+  The <tt>ConditionalStatement</tt> type should have the following methods:
+</p><ul><li><tt>execute</tt>: takes a <em>state</em> and returns nothing.  The <em>state</em> is used to get the value of the <em>condition</em>.  If the condition's <em>value</em> is
+<tt>true</tt> the <em>state</em> is used to executed the then <em>statement</em>.  Otherwise the <em>state</em> is used to execute the the else <em>statement</em>.</li>
+    <li><tt>toString</tt>: should return a string that contains the text
+ "if", followed by a space, followed by a "(", followed by the string 
+representation of the conditional,
+           followed by a ")", followed by a newline character, followed 
+by the result of calling <tt>toStringTabbed</tt> with input 1 on the then <em>statement</em>, followed
+           by a "else", followed by a newline character, followed by the result of calling <tt>toStringTabbed</tt> with input 1 on the else <em>statement</em>.</li>
+    <li><tt>toStringTabbed</tt>: takes an <tt>int</tt> as input and returns a string.  The returned string should be indentical to what is returned by <tt>toString</tt> except that
+            both the "if" and the "else" are prefixed by a number of tab characters equal to the value of the input <tt>int</tt>, and the <tt>toStringTabbed</tt> methods for the
+            then and else <em>statements</em> are called with an input that is one more than the input to this method.  You may assume the input value is not negative.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>Loop</tt>: The <tt>Loop</tt> type represents a loop statement (while) in the language.
+A <tt>Loop</tt> type instance should be created with two arguments, a <em>boolean condition</em> and one <em>statements</em> representing the loop body.
+Any language structure that has an <tt>boolean</tt> value should be allowed as the <em>condition</em>, and any language structure that represents a statement
+should be allowed as the body. 
+  The <tt>Loop</tt> type should have the following methods:
+</p><ul><li><tt>execute</tt>: takes a <em>state</em> and returns nothing.  The method has a loop.  At each iteration of the loop, the <em>state</em> is used to get the 
+          value of the <em>condition</em>.  If the condition's <em>value</em> is <tt>true</tt> the <em>state</em> is used to executed the body <em>statement</em>.  
+          If the <em>condition</em> evaluates to <tt>false</tt>, the loop terminates and the method exits.</li>
+    <li><tt>toString</tt>: should return a string that contains the text
+ "while", followed by a space, followed by a "(", followed by the string
+ representation of the conditional,
+           followed by a ")", followed by a newline character, followed 
+by the result of calling <tt>toStringTabbed</tt> with input 1 on the body <em>statement</em>.</li>
+    <li><tt>toStringTabbed</tt>: takes an <tt>int</tt> as input and returns a string.  The returned string should be indentical to what is returned by <tt>toString</tt> except that
+            the "while" is prefixed by a number of tab characters equal to the value of the input <tt>int</tt>, and the <tt>toStringTabbed</tt> method for the
+            body <em>statement</em> is called with an input that is one more than the input to this method.  You may assume the input value is not negative.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>CompoundStatement</tt>: The <tt>CompoundStatement</tt> type represents a compound statement/block of code in the language.
+A <tt>CompoundStatement</tt> type instance should be created with one <em>variable length parameter</em> of <em>statements</em>.
+Any language structure that represents a statement should be allowed as the body. 
+The <tt>CompoundStatement</tt> type should have the following methods:
+</p><ul><li><tt>execute</tt>: takes a <em>state</em> and returns nothing.  The method has a loop.  At each iteration of the loop, the <em>state</em> is used to execute each 
+          of the <em>statements</em> in the array of <em>statements</em>, in order.</li>
+    <li><tt>toString</tt>: should return a string that contains a text "{", followed by a newline character, followed by the result of calling the <tt>toStringTabbed</tt> method
+           with input 1 on each of the <em>statements</em> in the list of <em>statements</em>, in order, followed by a "}", followed by the newline character.</li>
+    <li><tt>toStringTabbed</tt>: takes an <tt>int</tt> as input and returns a string.  The returned string should be indentical to what is returned by <tt>toString</tt> except that
+            the "}" and "{" are prefixed by a number of tab characters equal to <em>one less</em> than the value of the input <tt>int</tt>, and the <tt>toStringTabbed</tt> method for each
+            <em>statement</em> in the list is called with an input that is equal to the input to this method.  You may assume the input value is not negative.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>Function</tt>: The <tt>Function</tt> type represents a function definition in the language.
+A <tt>Function</tt> type instance should be created with three inputs: a string name, a <em>statement</em> that is the function body, and a <em>variable length parameter</em> of <em>variables</em> that will be this function's parameters.
+Any language structure that represents a statement should be allowed as the body. 
+The <tt>Function</tt> type should have the following method:
+</p><ul>
+    <li><tt>toString</tt>: should return a string that contains a text 
+"function", followed by the function's name, followed by "(", followed 
+by each of the
+           <em>variables</em> of the function, separated by a space and a comma (except the last one), followed by a ")", followed by the newline character,
+           followed by the result of calling the <tt>toStringTabbed</tt> method of the body of the function with input 1.</li>
+    </ul>
+<p></p></li>
+
+<li><p><tt>FunctionCall</tt>: The <tt>FunctionCall</tt> type represents a function call in the language.
+A <tt>FunctionCall</tt> type instance should be created with two inputs: a <tt>Function</tt> and a <em>variable length parameter</em> of <em>expressions</em> that will
+be the arguments of this function call.
+Any language structure that produces an <tt>int</tt> value should be allowed as an expression. 
+The <tt>FunctionCall</tt> type should have the following methods:
+</p><ul>
+    <li><tt>value</tt>: should take a <em>state</em> and return an <tt>int</tt>.  The method should create a new empty <em>state</em>.  For each <em>variable</em>
+        in the function's list of parameters, the new <em>state</em> should be <em>updated</em> with this <em>variable</em> and the value from the corresponding
+        argument.  The original <em>state</em> should be used to get the value of the argument.  If there is no corresponding argument, the value of 0 should be
+        used for the <em>update</em>.  Then, the function's body should be executed using the new <em>state</em>.  Finally, the value of the keyword <tt>"return"</tt>
+        should be <em>looked up</em> in the new <em>state</em> and returned from this function.</li>
+        
+    <li><tt>toString</tt>: should return a string that contains the 
+function's name, followed by "(", followed by the string representation 
+of each of the
+           arguments of the function call, separated by a space and a 
+comma (except the last one), followed by a ")".</li>
+    </ul>
+<p></p></li>
+
+</ol>
+<p></p>
+
+<h4>An example</h4>
+
+<p>If you get the above classes working, you can do the following:
+</p><pre>&gt; Variable x = new Variable("x")
+&gt; Variable n = new Variable("n")
+&gt; Function f = new Function("sum", new CompoundStatement(new Assignment(x, new Number(0)), new Loop(new Comparison(Comparison.Operator.GT, n, new Number(0)), new CompoundStatement(new Assignment(x, new ArithmeticOperation(ArithmeticOperation.Operator.Add, x, n)), new Assignment(n, new ArithmeticOperation(ArithmeticOperation.Operator.Sub, n, new Number(1))))), new Return(x)), n)
+&gt; f.toString()
+"function sum(n)
+{
+	x := 0;
+	while (n &gt; 0)
+	{
+		x := x + n;
+		n := n - 1;
+	}
+	return x;
+}"
+
+&gt; new FunctionCall(f, new Number(1)).value(new State())
+1
+&gt; new FunctionCall(f, new Number(10)).value(new State())
+55
+&gt; Function m = new Function("main", new CompoundStatement(new Assignment(new Variable("y"), new Number(6)), new Return(new FunctionCall(f, new Variable("y")))))
+&gt; m.toString()
+"function main()
+{
+	y := 6;
+	return sum(y);
+}"
+
+&gt; new FunctionCall(m).value(new State())
+21
+</pre><p></p>
+
+
+<h3>JUnit Testing (20% of your project grade)</h3>
+
+<p>You are to write JUnit tests for your classes as well as a testing report.  The testing report should describe the <em>kinds</em>
+ of tests that are required
+for this project.  The JUnit testing classes should have comments and 
+testing method names matching the specific tests to the descriptions in 
+your report.</p>
+
+
+
+
+</body></html>

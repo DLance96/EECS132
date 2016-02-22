@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>EECS 132: Homework Project 2</title>
+</head>
+
+<body>
+<h2>Programming Project 2</h2>
+<h3>Due Friday, October 17 at 11:59pm</h3>
+
+<p>The purpose of this project is to give you practice writing loops.  </p>
+
+<h3>General Guidelines (20% of your grade will be based on using good style)</h3>
+
+<p>
+</p><ul>
+<li>All methods listed below must be <tt>public</tt> and <tt>static</tt>.</li>
+<li>No additional methods are needed.  
+However, you may write additional <em>private</em> helper methods, but you need to have efficient and simple algorithms. Do not write helper methods that do extra, unnecessary,
+traversals of the data.</li>
+<li>You should place a comment at the top of the file that contains your name
+and a short description of the purpose of the class.</li>
+<li>You should place a <em>short</em> comment before (directly above) each method describing the method.  The comment should
+be only describe <em>what</em> the method does, not <em>how</em> it does it.  Do not simply copy the descriptions
+below for your comments.</li>
+<li>You are encouraged to make the comments above the class and methods in JavaDoc style, but that is not required.</li>
+<li>You should place a short comment directly above each field (if you have any)
+indicating the purpose of the variable.</li>
+<li>You should place a short comment either above or next to each 
+variable however variables that are only used as loop indeces do not 
+need comments.</li>
+<li>You should place a short comment above each loop explaining how the loop works.  Ideally, you should list the goal of the 
+loop, any required precondition for the loop, and if you can, a good iteration subgoal for the loop.</li>
+<li>Any other complicated code such as code the has lots of if statements or variables should contain <em>short</em> comments to help the reader.  The comments can either be above the code fragment or to the right, aligned in a column.</li>
+<li>If your code is using a loop to modify or create a string, you need to use the <tt>StringBuilder</tt> class from the API.</li>
+<li><strong>Important:</strong> While it is tempting to hunt through the API to find methods of <tt>String</tt> and <tt>StringBuilder</tt> to help you, most of the methods will be too inefficient for good code.  You should limit your code to use the
+<tt>charAt</tt> and <tt>length</tt> methods of <tt>String</tt> and the
+<tt>append</tt>, <tt>charAt</tt>, <tt>setCharAt</tt>, <tt>length</tt>, and <tt>toString</tt> methods of <tt>StringBuilder</tt>.  You may use methods from the <tt>Character</tt>
+class though they are not required.</li>
+<li><strong>Important:</strong> This homework is to give you practice manipulating strings using loops.  Do not use arrays in your program.</li>
+<li><strong>Important:</strong> You should not use the commands <tt>break</tt> nor <tt>continue</tt> in your loops.</li>
+<li>Remember to use good style: everything should be indented nicely, 
+variables should have good names, there should be a blank line between 
+each method.</li>
+</ul><p></p>
+
+<p>To submit your project, click on the <em>HW 2</em> link, and you should find a <em>Submit</em> link.  Attach your
+Java file and your testing report.
+Remember to attach the files that end in <tt>.java</tt>, not <tt>.class</tt> or <tt>.java~</tt>.</p>
+
+<h3>Part I: Programming (60% of your grade will be correctness of the following)</h3>
+
+<p>Try to keep your code as simple as possible.</p>
+
+
+<p>Create a class called <tt>HW2</tt> that contains the following methods:
+</p><ol>
+
+<li><p><tt>isAlphabeticalOrder</tt> takes a <tt>String</tt> as input and returns a <tt>boolean</tt>:
+The method returns <tt>true</tt> if all the letters of the input string are in alphabetical order, regardless of case.
+Any character that is not a letter is ignored.
+The method returns <tt>false</tt> otherwise.
+</p><pre>&gt; HW2.isAlphabeticalOrder("ac!ffG5 h")
+true
+&gt; HW2.isAlphabeticalOrder("ac!nfG5 h")
+false
+</pre>
+<p></p></li>
+
+<li><p><tt>removeNchars</tt> takes a <tt>String</tt>, an <tt>int</tt> and a <tt>char</tt> and returns a <tt>String</tt>:
+The output string is the same as the input string except that the first <em>n</em> occurrences of the input <tt>char</tt>
+are removed from the string, where <em>n</em> represents the input integer.  If there are not <em>n</em> occurrences of the input
+character, then all occurrences of the character are removed.
+</p><pre>&gt; HW2.removeNchars("Hello there!", 2, 'e')
+"Hllo thre!"
+&gt; HW2.removeNchars("Hello there!", 10, 'e')
+"Hllo thr!"
+&gt; HW2.removeNchars("Hello there!", 1, 'h')
+"Hello tere!"
+</pre>
+<p></p></li>
+
+<li><p><tt>moveXright</tt> takes a <tt>char</tt> and a <tt>String</tt> as input and returns a <tt>String</tt>:<br>
+The output string should be the same as the input strinc except that the first occurrence of the input <tt>char</tt> is swapped with the 
+character immediately to its right.  If there is no occurrence of the input <tt>char</tt> or if it is the last character of the input string,
+then the output will be identical to the input.
+</p><pre>&gt; HW2.moveXright('X', "abcXde")
+"abcdXe"
+&gt; HW2.moveXright('X', "abcdeX")
+"abcdeX"
+</pre>
+<p></p></li>
+
+<li><p><tt>bracketString</tt> takes two <tt>String</tt>s and returns a <tt>String</tt>:<br>
+The output string should be the same as the first input string except 
+that every occurrence of the second input string should be placed inside
+ brackets [ ].<br>
+If a string exists twice as an overlap (ex: "ellelle" contains two "elle"), the first occurrence is bracketed.<br>
+</p><pre>&gt; HW2.bracketString("Sheets wheels thee tree heed McPhee", "hee")
+"S[hee]ts w[hee]ls t[hee] tree [hee]d McP[hee]"
+&gt; HW2.bracketString("a b a b c a b a b c", "a b")
+"[a b] [a b] c [a b] [a b] c"
+&gt; HW2.bracketString("ellellelle", "elle")
+"[elle]ll[elle]"
+</pre>
+<p></p></li>
+
+<li><p><tt>moveAllXsRight</tt> takes a <tt>char</tt> and a <tt>String</tt> as input and returns a <tt>String</tt>:<br>
+The output string should be the same as the input string except that 
+every occurrence of the input character should be shifted one character 
+to 
+the right.  If it is impossible to shift a character to the right (it is
+ at the end of the string), then it is not shifted.
+</p><pre>HW2.moveAllXsRight('X', "abcXdeXXXfghXiXXjXX")
+"abcdXefXXXghiXjXXXX"
+</pre>
+<p></p></li>
+
+<li><p><tt>moveXdown</tt> takes a <tt>char</tt> and a <tt>String</tt> as input and returns a <tt>String</tt>:<br>
+The output string should be the same as the input string except that the
+ first occurrence of the input character should be swapped with one 
+other character of the string.
+The character the input character is swapped with should be after the 
+next occurrence of the special <em>end-of-line</em> character <tt>'\n'</tt>,
+ the same number of characters
+after the end-of-line character as the first occurrence is after either 
+its previous end-of-line character or the start of the string, and 
+before the next end-of-line character.
+If no such character exists in the string, the output should be the same
+ as the input string.
+</p><pre>&gt; HW2.moveXdown('X', "abcXd\nefghi\njklm")
+"abchd
+efgXi
+jklm"
+&gt; HW2.moveXdown('X', "abchd\nefgXi\njklm")
+"abchd
+efgmi
+jklX"
+&gt; HW2.moveXdown('X', "abcXd\nefg\njklm")
+"abcXd
+efg
+jklm"
+</pre>
+<p></p></li>
+
+</ol><p>
+
+</p><h4>Extra Credit (10%)</h4>
+Create the following three methods:
+<ul>
+<li><p><tt>moveXleft</tt> takes a <tt>char</tt> and a <tt>String</tt> and does the reverse of <tt>moveXright</tt> in that it swaps the first occurrence of the input
+<tt>char</tt> with the character immediately to its left.</p></li>
+<li><p><tt>moveXup</tt> takes a <tt>char</tt> and a <tt>String</tt> that does the reverse of <tt>moveXdown</tt> in that it swaps the first occurrence of the input
+<tt>char</tt> with the character immediately <em>above</em> it, if such a character exists.</p></li>
+<li><p><tt>fifteenPuzzle</tt> takes a <tt>char</tt> and a <tt>String</tt> and returns nothing.  The methods uses the <tt>Scanner</tt> class to read user input.
+The method repeats the following until the user enters <tt>"q"</tt>.  The method  prints the input string using <tt>System.out</tt>, and it gets user input.  
+The method then calls either <tt>moveXup</tt>, <tt>moveXright</tt>, <tt>moveXdown</tt> or <tt>moveXleft</tt> depending on if the user enters <tt>"u"</tt>,
+<tt>"r"</tt>, <tt>"d"</tt> or "l". Each method is called with the <tt>char</tt> set to the input <tt>char</tt> of the <tt>fifteenPuzzle</tt> method
+and the current string.  The string returned by the method call is the new current string.
+For example, the following call to <tt>fifteenPuzzle</tt>
+</p><pre>HW2.fifteenPuzzle(' ', "EC5D\n6 A3\n9B78\n2F14")
+</pre>
+will initially print
+<pre>EC5D
+6 A3
+9B78
+2F14
+</pre>
+and the goal of the game is to move the space left/right/up/down to eventually produce:
+<pre>1234
+5678
+9ABC
+DEF
+</pre>
+<p></p></li></ul>
+
+<p></p>
+
+<h3>Part 2: Project Testing (20% of your project grade)</h3>
+
+<p>You need to write tests for each of the methods above.  Your tests 
+should be thorough.
+Your testing report should describe why your test cases sufficiently 
+tested your code as well as the specific tests you ran and their 
+results.
+If you are unable to complete a method above, you should still
+describe tests that would test the method had it been completed.</p>
+
+<p>Hints for testing loops.  Your tests need to, at the minimum cover the following cases:
+</p><ol>
+<li><strong>Test 0, test 1, test many:</strong>  This means you have to test cases where the parameters, if they are integers,
+are 0, 1 or some value other than 1.  If the parameters are strings, you have to test strings of length 0, 1, and more than 1.
+If the strings must contain certain data, you need to test cases where they contain 0, 1, and more than 1 of the desired data.</li>
+<li><strong>Test first, last, and middle:</strong>  In cases where you 
+have to search in or modify a string, you need to test
+cases where the item to be found or modified is the first character of 
+the string, the last character of the string, or somewhere
+in the middle of the string.</li>
+</ol><p></p>
+
+<p>In summary, your tests should cover each of the above cases for each of the methods you complete in the homework.
+Your testing report should state what <em>test 0, test 1, test many</em> and <em>test first, last, and middle</em> mean for each of the homework
+methods and how your tests covered these cases.</p>
+
+<p><strong>JUnit</strong>: you will be learning about JUnit soon in a lab.  JUnit will be required for future homeworks, and you are welcome
+to use it with this homework.  If you choose to write JUnit tests for your code,
+your report should not list the specific tests and their results because the graders can run your JUnit tests.
+Instead, your report should only detail what <em>test 0, test 1, test many</em> and <em>test first, last, and middle</em> means for each
+method and why your JUnit tests cover those cases.
+
+
+
+</p></body></html>

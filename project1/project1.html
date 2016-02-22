@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>EECS 132: Programming Project 1</title>
+</head>
+
+<body>
+<h2>Programming Project 1</h2>
+<h3>Due Friday, October 3 at 11:59pm</h3>
+
+<p>For this programming project, we will pretend that you have been 
+asked by the Cleveland Gas and Electric Company to help develop a system
+ to handle the utility accounts they manage.
+In a "real world" application, code such as this would be tied to a 
+database.  Here, we will just
+focus on the processing that is required to keep track of account 
+information, record usage, and determine monthy payments. 
+The purpose of this project is to give you practice writing classes and 
+methods,
+manipulating variables of both primitive and non-primitive types, and 
+writing <tt>if</tt> statements.</p>
+
+<h3>General Guidelines (20% of your grade will be based on using good style)</h3>
+
+<p>Here are some guidelines for the lab:
+</p><ul>
+<li>All methods listed below must be <tt>public</tt>.</li>
+<li>You will need to create several instance fields to store data, and all fields should be <tt>private</tt>.</li>
+<li>All fields and variables should be given appropriate and descriptive names.</li>
+<li>Unless otherwise stated, all fields and methods should be <em>non-static</em>.</li>
+<li>All fields should be initialized to appropriate values.  Even if you
+ feel that the default Java value is appropriate,
+you should still explicitly initialize the field.  The field should be 
+initialized either as part of the declaration statement or
+in the class constructor.</li>
+<li>You should organize your class by placing all fields at the beginning of the class,
+the constructors next, and finally the methods.</li>
+<li>You will not need any loop statements in the classes below, and you should not use loop statements.  
+Each of the methods below can be written using
+<tt>if</tt> statements, assignment statements, arithmetic, comparison, 
+and boolean operators, return statements, dot and new operators, and 
+method calls.
+You may use loop statements in your testing report.</li>
+<li>All code should follow good style (see page 689 of the Lewis book 
+for an example guideline).  All code should be indented consistently 
+(the exact number of spaces is up to you, but it should be at least 2 
+and it should be consistent
+through your code), operators should have
+spaces around them, there should be an empty line between methods.  You 
+need to be consistent in your use of { }, and the closing } must always 
+be
+on its own line and indented the same as the line with the opening {. 
+Method and variable names should start with lowercase letters.</li>
+<li>You should place a comment at the top of each file that contains your name
+and a short description of the purpose of the class.</li>
+<li>You should place a <em>short</em> comment before (directly above) each method describing the method.  The comment should
+be one or two sentences and describes <em>what</em> the method does, not <em>how</em> it does it.  Do not simply copy the descriptions
+below for your comments.</li>
+<li>You should place a short comment directly above each field and directly above or to the right of each local variable
+indicating the purpose of the variable.</li>
+<li>If wish to add a comment explaining how complicated code is works (a
+ very good idea!), the comment should go inside the method body and
+either immediately above or to the right of the code.  Comments placed 
+on the right should be nicely aligned in a column.</li>
+<li>Any method whose name begins with <tt>set</tt> should only assign a value to an appropriately
+named variable.  The method should do no other processing.  Any processing described in a <tt>set</tt>
+method description below is for information only.  That actual processing will be done by other methods.
+</li>
+<li>Any method whose name begins with <tt>get</tt> should only return the appropriate value.
+No other processing should occur in these methods.</li>
+<li>You are welcome to add additional helper methods that you feel would be useful, but <em>any additional methods should be private</em>.</li>
+<li>While it may seem that there are a lot of methods, do not get intimidated by this!  Most
+of the methods have exactly the same form and you will find they get easier as you get the
+hang of it.  Start with the first class and code one method at a time.  Don't try to
+figure out all the variables/fields you need at first, but add them as needed for the methods.</li></ul><p></p>
+
+<p><strong>Important:</strong> the behavior of your methods <em>must</em> match the descriptions given below.
+For example, none of the descriptions states that error messages will be produced on bad input, and so your code <em>should not</em>
+ produce such messages.
+That does not mean that you can not add error handling code if you feel 
+that it will improve the program, but your code must do something 
+reasonable and
+must not produce behavior that is inconsistent with the project 
+description.</p>
+
+<p>To submit your project, click on the <em>Project 1</em> link, and you should find a <em>Submit</em> link.  Attach your
+four Java files and your testing report.
+Remember to attach the files that end in <tt>.java</tt>, not <tt>.class</tt> or <tt>.java~</tt>.</p>
+
+<h3>Part I: Programming (60% of your grade will be program correctness)</h3>
+
+<p>Create the following classes:</p>
+
+<ol>
+<p>The Account class.  The Account class will represent a specific 
+utility account (for example, gas, water, or electric).  The Account 
+class should have the
+following methods:
+</p><ol type="a">
+<li><p><tt>void setLineFee(double lineFee)</tt>: sets the monthly fee for having service.</p></li>
+<li><p><tt>double getLineFee()</tt>: retrieves the monthly fee for having service.</p></li>
+<li><p><tt>void setRate(double rate)</tt>: sets the rate for the account.</p></li>
+<li><p><tt>double getRate()</tt>: retrieves the rate for the account. </p></li>
+<li><p><tt>void setSalesTaxRate(double taxRate)</tt>: sets the tax percentage that is applied to sales.</p></li>
+<li><p><tt>double getSalesTaxRate()</tt>: retrieves the tax percentage that is applied to sales.</p></li>
+<li><p><tt>void setInterestRate(double interestRate)</tt>: sets the interest percetange that is applied to past-due amounts.</p></li>
+<li><p><tt>double getInterestRate()</tt>: retrieves the interest percentage that is applied to past-due amounts.</p></li>
+<li><p><tt>void setMonthUsage(int monthUsage)</tt>: sets the amount of the service used by the account this month. </p></li>
+<li><p><tt>int getMonthUsage()</tt>: retrieves the amount of the service used by the account this month. </p></li>
+<li><p><tt>int getPastYearUsage()</tt>: retrieves the amount of the service used by the account in the previous year.</p></li>
+<li><p><tt>double getBalance()</tt>: retrieves the current money balance on the account.</p></li>
+<li><p><tt>double getMonthBill()</tt>: retrieves the amount billed to the customer this month.</p></li>
+<li><p><tt>double getAmountPaidThisMonth()</tt>: retrieves the amount the customer has paid so far this month.</p></li>
+<li><p><tt>void receivePayment(double amount)</tt>: decreases the balance by <tt>amount</tt> and increases the amount paid this month by <tt>amount</tt>.</p></li>
+<li><p><tt>void openAccount(Date date, Customer customer)</tt>: sets the account's customer to <tt>customer</tt> and sets the account anniversary date to <tt>date</tt>.</p></li>
+<li><p><tt>boolean isOpen()</tt>: returns <tt>true</tt> if the account is open and <tt>false</tt> otherwise.</p></li>
+<li><p><tt>Date getAnniversaryDate()</tt>: retrieves the anniversary date for the account.</p></li>
+<li><p><tt>Customer getCustomer()</tt>: retrieves the customer for the account.</p></li>
+<li><p><tt>void endOfYearProcessing()</tt>: 
+If the account is not open, nothing is done.  Otherwise the method does 
+the following processing.
+If the account is not on a monthly plan, the expected monthy usage is 
+set to the current year usage divided by 12.  
+          If the user is on a monthly plan, the expected monthly usage 
+is the current year usage plus the difference between the current year 
+usage and the previous year usage, the total 
+          divided by 12.  Then, the previous year usage is set to the 
+current year usage, and the current year usage is set to 0.</p></li>
+<li><p><tt>void endOfMonthProcessing()</tt>: 
+If the account is not open, nothing is done.  Otherwise, the method does
+ the following processing.
+First, the current year usage is increased by the month usage. Second, 
+the account balance is adjusted. The balance is increased by the line 
+fee,
+by the product of the month usage and the rate, and by the sales tax 
+applied to each of these two charges. In addition, if the total amount 
+paid this month was less than the month bill, the 
+interest rate is applied to the difference and this amount is added to 
+the balance.  Finally, the month bill is calculated.  If the account is 
+not on a monthly plan, the month bill is
+equal to the current balance or zero if the current balance is negative.
+  If the account is on a monthly plan, the month bill is equal to the 
+sum of the following: (a) the difference between
+the previous month bill and the amount paid this month, (b) the interest
+ applied if there was a positive difference between the month bill and 
+the amount paid, (c) the line fee,
+(d) the product of the rate and the expected monthly usage, and (e) the 
+sales tax applied to both the line fee and the product of the rate and 
+the expected monthly usage.</p></li>
+<li><p><tt>boolean isOnMonthlyPlan()</tt>: returns <tt>true</tt> if the account is on a monthly plan and <tt>false</tt> otherwise.</p></li>
+<li><p><tt>void turnOffMonthlyPlan()</tt>: sets the account to no longer
+ be on a monthly plan.  If the account is open, it sets the expected 
+monthy usage to be the past year usage divided by 12.</p></li>
+<li><p><tt>void turnOnMonthlyPlan()</tt>: sets the account to be on a 
+monthly plan.  
+If the account is open, it sets the expected monthy usage to be the 
+difference between the past year usage and the current year usage
+(or zero if this difference is negative) divided by the number of months
+ from the current date (where can you find it?) to the anniversary date 
+(use the appropriate method below to retrieve the month difference).</p></li>
+<li><p><tt>processDate(Date date)</tt>: if the account is not open, 
+nothing is done.  Otherwise, if the date's day and month are both equal 
+to the anniversary date's day and month, the endOfYearProcessing method 
+should be called.
+Then, if the date's day is equal to the anniversary date's day, the 
+endOfMonthProcessing method should be called.</p></li>
+</ol>
+The Account class should have the following constructors:
+<ol type="a">
+<li><p>One has input <tt>double lineFee, double rate, double taxRate, double interestRate, int expectedMonthlyUsage</tt>
+ and it sets the line fee, rate, sales tax rate, and interest rate
+accordingly.  The expected monthly usage is set to the input value and 
+the past year usage is set to 12 times the expected monthly usage.  The 
+account should be created as not open.</p></li>
+<li><p>One has input <tt>double lineFee, double rate, double taxRate, double interestRate, int expectedMonthlyUsage, Customer customer, Date date</tt> and it performs the same as the
+previous constructor plus it sets the account's customer and anniversary date and it opens the account.</p></li>
+</ol>
+
+
+<li>The Date class.  The Date class will represent a date.  (Java has 
+both Date and Calendar in the API, but both are more complex than needed
+ for this homework.)
+The Date class should have the following methods:
+<ol type="a">
+<li><p><tt>int getDay()</tt>: returns the day of the date.  The day should be a value between 1 and 31.</p></li>
+<li><p><tt>int getMonth()</tt>: returns the month of the date.  The month should be between 1 and 12.</p></li>
+<li><p><tt>void incrementDay()</tt>: adds 1 to the day of the date.  If 
+the day exceeds the number of days for the month,
+the day is set to 1 and the month is incremented.  (Note that we will 
+not be keeping track of years and so you should ignore leap years.)  If 
+the month exceeds 12, the month is set to 1 and the year is incremented.</p></li>
+<li><p><tt>int monthsUntil(Date date)</tt>: returns the number of months
+ until the input Date, rounded up.  A full month is considered to be 
+from the day or one month to the identical day of the next month.  For 
+example, if this date is April 10, the number of months until July 12 is
+ 4, the
+number of months until September 10 is 5, and the number of months until
+ February 2 is 10.  Note that the last days of each month must be 
+handled specially so the number of months from February
+28 to March 31 is 1, the number of months from February 28 to March 29 
+is 1, but the number of months from February 27 to March 28 is 2.</p></li>
+</ol>
+The Date class should have one constructor:
+<ol type="a">
+<li><p>It has input <tt>int day, int month</tt> and initializes the Date object with the given inputs.  You may assume that the inputs are all valid values.</p></li>
+</ol>
+</li>
+
+<li><p>The Customer class.  The Customer class represents a person or organization that is a customer of the utility.
+The class should have the following methods.
+</p><ol type="a">
+<li><p><tt>void setFirstName(String firstName)</tt>: changes the first name associated with the customer.</p></li>
+<li><p><tt>String getFirstName()</tt>: returns the first name associated with the customer.</p></li>
+<li><p><tt>void setLastName(String lastName)</tt>: changes the last name associated with the customer.</p></li>
+<li><p><tt>String getLastName()</tt>: returns the last name associated with the customer.</p></li>
+<li><p><tt>void setAddress(String address)</tt>: changes the address associated with the customer.</p></li>
+<li><p><tt>String getAddress()</tt>: returns the address associated with the customer.</p></li>
+<li><p><tt>void setElectricAccount(Account electricAccount):</tt> assigns an account for electricity usage for this customer.</p></li>
+<li><p><tt>Account getElectricAccount()</tt>: returns the account for electicity usage by this customer.</p></li>
+<li><p><tt>void setGasAccount(Account gasAccount):</tt> assigns an account for natural gas usage for this customer.</p></li>
+<li><p><tt>Account getGasAccount()</tt>: returns the account for natural gas usage by this customer.</p></li>
+<li><p><tt>void setWaterAccount(Account waterAccount):</tt> assigns an account for water usage for this customer.</p></li>
+<li><p><tt>Account getWaterAccount()</tt>: returns the account for water usage by this customer.</p></li>
+<li><p><tt>void setDate(Date date):</tt> sets a Date instance associated with this customer.</p></li>
+<li><p><tt>Date getDate():</tt> returns a Date instance associated with this customer.</p></li>
+<li><p><tt>void incrementDate():</tt> calls the associated method of the Date class to increment the date.  Calls the <tt>processDate</tt> method of each account that exists for the customer.
+</p></li>
+</ol>
+The Customer class should have two constructors:
+<ol type="a">
+<li><p>One had input <tt>String lastName, String address</tt> and sets the
+last name and address.</p></li>
+<li><p>One had input <tt>String firstName, String lastName, String address, Date date</tt> and sets the
+appropriate values.</p></li>
+</ol>
+</li>
+</ol><p></p>
+
+<h3>Part 2: Testing Report (20% of your grade will be on the thoroughness of your testing)</h3>
+
+<p>You are to test every method that you created.  You should copy those tests and your program output to a report,
+and you should submit the report.  Your report will be graded on the thoroughness of your testing, not the correctness of
+the results.  <strong>Important:</strong> Your tests must match your code.  That is, you must
+give the true outputs of your program.  If your program gives an incorrect result or an error, you should try to fix the
+problem and re-run the tests.  If you are unable to fix the problem before the homework deadline, submit the tests with
+the incorrect results and/or error messages.  You should also include a statement highlighting the error.  
+If you do not submit a test report, you will get a 0 on this section, but
+if you are found to have faked your results, you will get a negative score.  In other words, you will be docked more 
+points than this section is worth.</p>
+
+<p>The report should be an English description of each test (what are 
+you testing and what is the expected result of the test), and then, if 
+you are using DrJava,
+ a copy of the code you entered in the interactions pane to do the test 
+plus the result reported by the interactions pane.
+For the getter/setter methods, the tests will be quite simple.  For the 
+more complicated methods that contain <tt>if</tt> statements, you will need to design tests that
+try all the possible branches through the <tt>if</tt> statements in the method.</p>
+
+<p><em>Hint:</em>  Do not wait until the very end to write your testing 
+report.  Putting off the testing report will both make writing the 
+report harder and will run the risk that
+there is an error in your program that you will not find until the last 
+minute.  Instead, each time you complete a set of simple methods or one 
+of the trickier methods,
+test your code, and if everything works copy the tests you did into your
+ report.</p>
+
+<p>Because, for many of you, this is your first time writing a Java class and methods, some testing hints will be provided
+on Blackboard as we get closer to the deadline for the assignment.</p>
+
+<h3>Extra Credit 1: (1\%)</h3>
+
+<p>Adjust the monthly bill value so that the value is rounded to the nearest penny.</p>
+
+<h3>Extra Credit 2: (10\%)</h3>
+
+<p>The use of the <tt>int</tt> type for the month is not a satisfactory solution because there is nothing to stop us
+from setting the month to be an possible value, not just 1 through 12.  You will fix this by changing the type of the
+<tt>month</tt> fields and variables to an <em>enum</em> type.  The <em>enum</em> is a non-primitive type that only
+supports a restricted number of values.  For our case, we will restrict the month to be Jan through Dec.</p>
+
+<p>First, read pages 179-182 in the Java in a Nutshell book.  This covers the basics of the enum.  Then, read
+pages 188-189 to learn how to add methods to the enum.</p>
+
+<ol>
+<li>Create an <em>enum</em> in Date class called <tt>Month</tt> that contains the values <tt>JAN</tt> through <tt>DEC</tt>.  The enum needs to be public so that it can be used in
+the other classes.</li>
+<li>Add a constructor to the enum that sets the number of days of each month in a normal (non-leap) year.</li>
+<li>Change the Date class to set the type of <tt>month</tt> to this enum and change all uses of month in your classes to have this enum as the type.
+<strong>Important:</strong> you many <strong>not</strong> use an array 
+or a loop in your extra credit code.  The purpose of the homework is to 
+improve your skills using classes, methods, constructors, and <tt>if</tt> statements.</li>
+</ol>
+
+
+
+</body></html>
